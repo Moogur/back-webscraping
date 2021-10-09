@@ -9,7 +9,8 @@ function helperForGetContent<T>(data: CheerioAPI, selector: string, callback: (e
       .map((_, elem) => callback(data(elem)))
       .toArray();
   } catch (error) {
-    throw error;
+    console.log(error);
+    throw new Error('Parsing error');
   }
 }
 
@@ -36,21 +37,17 @@ export function parseAllData(
 }
 
 export function getCountPageAndBaseUrl(data: CheerioAPI, selector: string): Pagination {
-  try {
-    let lastItem: Pagination | undefined;
-    data(selector).each((_, elem) => {
-      const count = data(elem).text();
-      if (!Number.isNaN(Number(count))) {
-        const url = data(elem).attr('href');
-        lastItem = { count: Number(count), url: url?.replace(count, REPLACE_URL_SYMBOLS) };
-      }
-    });
-
-    if (!lastItem) {
-      throw new Error('pagination is not found');
+  let lastItem: Pagination | undefined;
+  data(selector).each((_, elem) => {
+    const count = data(elem).text();
+    if (!Number.isNaN(Number(count))) {
+      const url = data(elem).attr('href');
+      lastItem = { count: Number(count), url: url?.replace(count, REPLACE_URL_SYMBOLS) };
     }
-    return lastItem;
-  } catch (error) {
-    throw error;
+  });
+
+  if (!lastItem) {
+    throw new Error('Pagination is not found');
   }
+  return lastItem;
 }

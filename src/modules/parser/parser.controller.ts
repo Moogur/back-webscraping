@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, InternalServerErrorException } from '@nestjs/common';
 import { ApiOkResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
 
 import { ParserService } from './parser.service';
@@ -13,21 +13,36 @@ export class ParserController {
   @Get('allLinks')
   @ApiQuery({ type: BaseScrabConfigDto })
   @ApiOkResponse({ type: String, isArray: true })
-  getAllLinks(@Query() query: BaseScrabConfig): Promise<string[]> {
-    return this.srv.getLinks(query);
+  async getAllLinks(@Query() query: BaseScrabConfig): Promise<string[]> {
+    try {
+      const response = await this.srv.getLinks(query);
+      return response;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   @Get('allTitles')
   @ApiQuery({ type: BaseScrabConfigDto })
   @ApiOkResponse({ type: String, isArray: true })
-  getAllTitles(@Query() query: BaseScrabConfig): Promise<string[]> {
-    return this.srv.getTitles(query);
+  async getAllTitles(@Query() query: BaseScrabConfig): Promise<string[]> {
+    try {
+      const response = await this.srv.getTitles(query);
+      return response;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   @Get('allData')
   @ApiQuery({ type: ScrabConfigDto })
   @ApiOkResponse({ type: AllDataResponseDto, isArray: true })
-  getAllData(@Query() query: ScrabConfig): Promise<AllDataResponse[]> {
-    return this.srv.getData(query);
+  async getAllData(@Query() query: ScrabConfig): Promise<AllDataResponse[]> {
+    try {
+      const response = await this.srv.getData(query);
+      return response;
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }

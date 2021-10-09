@@ -23,22 +23,17 @@ export class ParserService {
   }
 
   private async helperForScrabingData<T>(callback: (data: CheerioAPI) => T[], config: BaseScrabConfig): Promise<T[]> {
-    try {
-      const data = [];
-      const response = await pageApi.getContent(config.url);
-      data.push(...callback(response));
+    const data = [];
+    const response = await pageApi.getContent(config.url);
+    data.push(...callback(response));
 
-      if (config.paginationSelector) {
-        const pagination = getCountPageAndBaseUrl(response, config.paginationSelector);
-        const promises = this.helperForMultipleData(config, callback, data, pagination);
-        await Promise.all(promises);
-      }
-
-      return data;
-    } catch (error) {
-      console.log(error);
-      throw error;
+    if (config.paginationSelector) {
+      const pagination = getCountPageAndBaseUrl(response, config.paginationSelector);
+      const promises = this.helperForMultipleData(config, callback, data, pagination);
+      await Promise.all(promises);
     }
+
+    return data;
   }
 
   private helperForMultipleData<T>(

@@ -25,9 +25,11 @@ export class PageApi extends BaseApi {
   public async getContent(url: string, config?: AxiosRequestConfig): Promise<CheerioAPI> {
     try {
       const html = await this.getHtmlPage(url, config);
+      if (typeof html !== 'string') throw new Error(JSON.stringify(html));
       return cheerio.load(html, { decodeEntities: false });
     } catch (error) {
-      throw error;
+      console.log(error);
+      throw new Error('Error when requesting a page');
     }
   }
 }
