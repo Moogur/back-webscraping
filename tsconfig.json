@@ -2,16 +2,20 @@
   // настройки строгости
   "extends": "./tsconfig-checks.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-
-    "allowJs": false,
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": false,
+    "allowJs": false,
     "resolveJsonModule": true
   }
 }
