@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 import cheerio, { CheerioAPI } from 'cheerio';
-// import randomUseragent from 'random-useragent';
+import { getRandom } from 'random-useragent';
 
 import { RequestData, USER_AGENT } from '../../common';
 import { BaseApi } from '../baseApi';
@@ -17,7 +17,7 @@ export class PageApi extends BaseApi {
       url,
       headers: {
         ...config?.headers,
-        'user-agent': USER_AGENT,
+        'user-agent': getRandom() ?? USER_AGENT,
       },
     });
   }

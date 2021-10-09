@@ -46,7 +46,7 @@ export class ParserService {
     const to = Number(config.countPage) - 1 || pagination?.count || 0;
 
     const promises = Array.from({ length: to }, (_, i) => i + from).map(async (item): Promise<void> => {
-      sleep(getRandomNumber(500, 1000));
+      sleep(getRandomNumber(Number(process.env['SLEEP_FROM']), Number(process.env['SLEEP_TO'])));
       const newUrl = getNormalUrl(
         pagination?.url?.replace(REPLACE_URL_SYMBOLS, item.toString()),
         config.multiplePrefixUrl,
