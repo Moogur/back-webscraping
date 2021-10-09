@@ -1,0 +1,17 @@
+.git
+.idea
+.vscode
+build
+public
+.eslintrc
+.prettierrc
+config-overrides.js
+package-lock.json
+package.json
+README.md
+tsconfig.json
+tsconfig-checks.json
+.editorconfig
+.eslintignore
+.prettierignore
+webpack.config.js

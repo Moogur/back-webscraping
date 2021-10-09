@@ -1,0 +1,13 @@
+.git
+.idea
+build
+public
+.eslintrc
+.prettierrc
+package-lock.json
+tsconfig.json
+tsconfig-checks.json
+README.md
+.editorconfig
+.eslintignore
+.prettierignore
