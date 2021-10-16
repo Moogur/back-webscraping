@@ -10,7 +10,7 @@ import { AllDataResponse, BaseScrabConfig, ScrabConfig } from './interfaces';
 export class ParserController {
   constructor(private srv: ParserService) {}
 
-  @Get('allLinks')
+  @Get('links')
   @ApiQuery({ type: BaseScrabConfigDto })
   @ApiOkResponse({ type: String, isArray: true })
   async getAllLinks(@Query() query: BaseScrabConfig): Promise<string[]> {
@@ -22,7 +22,7 @@ export class ParserController {
     }
   }
 
-  @Get('allTitles')
+  @Get('titles')
   @ApiQuery({ type: BaseScrabConfigDto })
   @ApiOkResponse({ type: String, isArray: true })
   async getAllTitles(@Query() query: BaseScrabConfig): Promise<string[]> {
@@ -34,7 +34,7 @@ export class ParserController {
     }
   }
 
-  @Get('allData')
+  @Get('data')
   @ApiQuery({ type: ScrabConfigDto })
   @ApiOkResponse({ type: AllDataResponseDto, isArray: true })
   async getAllData(@Query() query: ScrabConfig): Promise<AllDataResponse[]> {
