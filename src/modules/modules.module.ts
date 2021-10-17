@@ -5,6 +5,6 @@ import { FileModule } from './file';
 import { ParserModule } from './parser';
 
 @Module({
-  imports: [ConfigModule.forRoot(), ParserModule, FileModule],
+  imports: [ConfigModule.forRoot({ envFilePath: './env/.env' }), ParserModule, FileModule],
 })
 export class ModulesModule {}
