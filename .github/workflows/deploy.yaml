@@ -1,4 +1,4 @@
-name: 'Deploy CI'
+name: Deploy
 
 on:
   push:
@@ -12,15 +12,15 @@ jobs:
       - name: 'checkout'
         uses: actions/checkout@v2
 
-      - name: 'set global env'
-        id: global-env
+      - name: 'global env'
+        id: global_env
         run: |
           echo "::set-output name=IMAGE_NAME::${GITHUB_REPOSITORY#*/}"
           echo "::set-output name=DOCKERHUB_IMAGE_NAME::docker.pkg.github.com/${GITHUB_REPOSITORY}/${GITHUB_REPOSITORY#*/}"
 
       - name: 'build and tag image'
         run: |
-          docker build -t "${{ steps.global-env.outputs.DOCKERHUB_IMAGE_NAME }}:${GITHUB_SHA::8}" .
+          docker build -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_NAME }}:latest" -t "${{ steps.global_env.outputs.DOCKERHUB_IMAGE_NAME }}:${GITHUB_SHA::8}" .
 
       - name: 'docker login'
         run: docker login docker.pkg.github.com -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
@@ -28,4 +28,4 @@ jobs:
       - name: 'publish image'
         env:
           IMAGE_NAME: $GITHUB_REPOSITORY
-        run: docker push "docker.pkg.github.com/$GITHUB_REPOSITORY/${{ steps.global-env.outputs.IMAGE_NAME }}:${GITHUB_SHA::8}"
+        run: docker push --all-tags "docker.pkg.github.com/$GITHUB_REPOSITORY/${{ steps.global_env.outputs.IMAGE_NAME }}"
