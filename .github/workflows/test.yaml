@@ -12,6 +12,10 @@ on:
 jobs:
   test-job:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node_version: [14.17.0]
+
     steps:
       - name: 'checkout'
         uses: actions/checkout@v2
@@ -19,7 +23,7 @@ jobs:
       - name: 'setup node'
         uses: actions/setup-node@v1
         with:
-          node-version: '14.17.0'
+          node-version: ${{ matrix.node_version }}
 
       - name: 'Cache node modules'
         uses: actions/cache@v2
