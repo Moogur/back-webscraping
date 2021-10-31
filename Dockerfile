@@ -1,20 +1,25 @@
 # First stage to build
-FROM node:14.17.0-alpine as builder
+FROM mhart/alpine-node:14.17 as builder
 
 WORKDIR /usr/src
 
 COPY . .
 
 RUN npm ci \
-  && npm run build
+  && npm run build:webpack
+
+COPY . .
+
+RUN npm ci --production
 
 # Second stage to run
-FROM node:14.17.0-alpine
+FROM mhart/alpine-node:slim-14.17
 
 WORKDIR /usr/app
 
-COPY --from=builder /usr/src/dist ./
+COPY --from=builder /usr/src/node_modules /usr/app/node_modules
+COPY --from=builder /usr/src/dist/server.js /usr/app/dist
 
 ENTRYPOINT ["/usr/app"]
 
-CMD ["node", "main"]
+CMD ["node", "dist/server"]
