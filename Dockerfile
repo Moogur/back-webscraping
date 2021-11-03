@@ -8,9 +8,9 @@ COPY . .
 RUN npm ci \
   && npm run build:webpack
 
-COPY . .
-
-RUN npm ci --production
+## install packages (without devDependencies)
+RUN rm -rf node_modules \
+  && npm ci --production=true
 
 # Second stage to run
 FROM mhart/alpine-node:slim-14.17
