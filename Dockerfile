@@ -13,8 +13,6 @@ FROM mhart/alpine-node:slim-14.17
 
 WORKDIR /usr/app
 
-COPY --from=builder /usr/src/dist/main.js /usr/app/dist
+COPY --from=builder /usr/src/dist/main.js /usr/app
 
-ENTRYPOINT ["/usr/app"]
-
-CMD ["node", "dist/main"]
+CMD ["node", "main"]
