@@ -8,18 +8,13 @@ COPY . .
 RUN npm ci \
   && npm run build:webpack
 
-## install packages (without devDependencies)
-RUN rm -rf node_modules \
-  && npm ci --production=true
-
 # Second stage to run
 FROM mhart/alpine-node:slim-14.17
 
 WORKDIR /usr/app
 
-COPY --from=builder /usr/src/node_modules /usr/app/node_modules
-COPY --from=builder /usr/src/dist/server.js /usr/app/dist
+COPY --from=builder /usr/src/dist/main.js /usr/app/dist
 
 ENTRYPOINT ["/usr/app"]
 
-CMD ["node", "dist/server"]
+CMD ["node", "dist/main"]

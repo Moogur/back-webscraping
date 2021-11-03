@@ -1,29 +1,29 @@
-const path = require('path');
+module.exports = (options, webpack) => {
+  const lazyImports = new Set([
+    '@nestjs/microservices/microservices-module',
+    '@nestjs/websockets/socket-module',
+    'class-transformer/storage',
+    'fastify-swagger',
+  ]);
 
-const nodeExternals = require('webpack-node-externals');
-
-module.exports = {
-  entry: './src/main.ts',
-  target: 'node',
-  mode: 'production',
-  externals: [nodeExternals()],
-  output: {
-    path: path.join(__dirname, 'dist'),
-    filename: 'server.js',
-  },
-  module: {
-    rules: [
-      {
-        test: /\.ts$/i,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
+  return {
+    ...options,
+    externals: [],
+    mode: 'production',
+    plugins: [
+      ...options.plugins,
+      new webpack.IgnorePlugin({
+        checkResource(resource) {
+          if (lazyImports.has(resource)) {
+            try {
+              require.resolve(resource);
+            } catch {
+              return true;
+            }
+          }
+          return false;
+        },
+      }),
     ],
-  },
-  resolve: {
-    extensions: ['.ts', '.js'],
-    alias: {
-      src: path.resolve(__dirname, 'src'),
-    },
-  },
+  };
 };
