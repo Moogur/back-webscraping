@@ -9,7 +9,6 @@ module.exports = (options, webpack) => {
   return {
     ...options,
     externals: [],
-    mode: 'production',
     plugins: [
       ...options.plugins,
       new webpack.IgnorePlugin({
